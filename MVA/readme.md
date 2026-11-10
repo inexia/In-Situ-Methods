@@ -92,7 +92,7 @@ holds for B itself, not for B/\|B\|.
 - **Eigenvalue ratios.** `ratio_ji` and `ratio_kj` should be well above 1. If a
   ratio is close to 1, the two directions cannot be told apart. For a front
   normal, `ratio_ji` ≥ 10 is a common rule of thumb (Sonnerup & Scheible 1998).
- **CME axis.** The requirements of the eigenvalue ratios can be a bit relaxed, but at least
+- **CME axis.** The requirements of the eigenvalue ratios can be a bit relaxed, but at least
   make sure to have ratio_ji > 2 and ratio_kj > 1.37.
 - **Histograms.** In `plot_bootstrap`, the cloud of copies should be compact and
   roughly elliptical. If it is not, trust the plot, not the numbers.
