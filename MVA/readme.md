@@ -155,8 +155,6 @@ number, `dphi['ij']`, serves both vectors.
 errors as direction angles: the code computes θ and φ for every copy and takes
 their spread.
 
-![Bootstrap example](example_bootstrap.png)
-
 *Left: each dot is one bootstrap copy of the axis, placed by its tilt toward k
 and toward i. Blue ellipse: 1σ (`dphi`). Orange circle: `cone68`. Right: the
 same copies as θ and φ.*
