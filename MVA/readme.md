@@ -85,6 +85,25 @@ the slow \|B\| profile but not the noise.
 normal component B · n being constant across the front (from ∇ · B = 0). That
 holds for B itself, not for B/\|B\|.
 
+## Checks before trusting a result !!!
+## !!!!!!!!!!!!!!!!!!!!
+## DON'T USE IT RANDOMLY!!!
+
+- **Eigenvalue ratios.** `ratio_ji` and `ratio_kj` should be well above 1. If a
+  ratio is close to 1, the two directions cannot be told apart. For a front
+  normal, `ratio_ji` ≥ 10 is a common rule of thumb (Sonnerup & Scheible 1998).
+ **CME axis.** The requirements of the eigenvalue ratios can be a bit relaxed, but at least
+  make sure to have ratio_ji > 2 and ratio_kj > 1.37.
+- **Histograms.** In `plot_bootstrap`, the cloud of copies should be compact and
+  roughly elliptical. If it is not, trust the plot, not the numbers.
+- **Noise correlation.** If `r` is large (above about 0.5) on a short window,
+  average the data first so that neighbouring points are nearly independent.
+- **Near the pole.** When \|θ\| is above about 70°, φ has no clear meaning;
+  quote `cone68` instead of `phi_err`.
+- **Robustness.** Compare with `normalization=False`, and move the start and end
+  of the interval a little. If the axis changes a lot, it is not well
+  determined.
+
 ## How the errors are estimated
 
 ### The bootstrap
@@ -107,6 +126,16 @@ Only the noise is resampled. The plain bootstrap (Kawano & Higuchi 1995)
 resamples whole data points, so it also reshuffles the rope's own field. That
 works for the minimum direction, but it makes the axis error toward k two to four
 times too large (see `test_bootstrap.py`).
+
+Side info.: To remove the large-scale |B| profile before MVA, we tested several ways of normalizing the field: dividing B by |B| at each point, 
+or by a smoothed |B| from a moving average, a Savitzky–Golay filter,  a smoothing spline with an automatic noise estimate, 
+or a polynomial fit (degree 2, 3, 4, or chosen by BIC). We applied each method to synthetic crossings of Lundquist and Gold–Hoyle flux ropes, 
+with and without expansion, at impact distances p/R = 0, 0.5 and 0.8, adding 5 % or 10 % white noise or 5 % time-correlated noise. 
+Dividing by |B| at each point performed worst: the noise left after normalization is uneven, and it shifted the axis by up to 62°. 
+The flexible smoothers worked well for white noise but followed the slow, correlated noise, adding errors of 7–11°. 
+The best method was a cubic polynomial fit of |B| over the cloud interval: 
+its extra axis error, compared with dividing by the true noise-free |B|, stayed below 1.6° in all cases and was 0.0° for correlated noise. 
+A cubic is flexible enough to follow the asymmetric |B| profile of an expanding cloud but cannot follow the noise, while a quadratic was too stiff (about 5° extra error).
 
 ### What `dphi` and "tilt" mean
 
@@ -132,24 +161,8 @@ their spread.
 and toward i. Blue ellipse: 1σ (`dphi`). Orange circle: `cone68`. Right: the
 same copies as θ and φ.*
 
-## Checks before trusting a result
-
-- **Eigenvalue ratios.** `ratio_ji` and `ratio_kj` should be well above 1. If a
-  ratio is close to 1, the two directions cannot be told apart. For a front
-  normal, `ratio_ji` ≥ 10 is a common rule of thumb (Sonnerup & Scheible 1998).
-- **Histograms.** In `plot_bootstrap`, the cloud of copies should be compact and
-  roughly elliptical. If it is not, trust the plot, not the numbers.
-- **Noise correlation.** If `r` is large (above about 0.5) on a short window,
-  average the data first so that neighbouring points are nearly independent.
-- **Near the pole.** When \|θ\| is above about 70°, φ has no clear meaning;
-  quote `cone68` instead of `phi_err`.
-- **Robustness.** Compare with `normalization=False`, and move the start and end
-  of the interval a little. If the axis changes a lot, it is not well
-  determined.
-
-
 ## References
-
+- Siscoe, G. L., & Suey, R. W. (1972). Significance criteria for variance matrix applications. JGR, 77, 7.
 - Kawano, H., & Higuchi, T. (1995). The bootstrap method in space physics: Error estimation for the minimum variance analysis. GRL, 22, 307.
 - Khrabrov, A. V., & Sonnerup, B. U. Ö. (1998). Error estimates for minimum variance analysis. JGR, 103, 6641.
 - Sonnerup, B. U. Ö., & Cahill, L. J. (1967). Magnetopause structure and attitude from Explorer 12 observations. JGR, 72, 171.
