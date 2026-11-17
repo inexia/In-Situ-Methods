@@ -8,7 +8,7 @@ and estimates their errors with a bootstrap that resamples only the noise.
 ## Quick start
 
 ```python
-from mva import mva, plot_bootstrap
+from minimum_variance_analysis import mva, plot_bootstrap
 
 # flux-rope axis: the whole cloud interval
 eigen, bs = mva(b1, b2, b3, normalization=True, smooth=True, n=2000)
